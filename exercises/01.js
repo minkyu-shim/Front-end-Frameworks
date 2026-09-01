@@ -4,10 +4,10 @@
 
 // This is a test to see everything works
 
-var movieTitle = "Inception";
-var releaseYear = 2010;
-var isWatched = false;
-var rating = 8.8;
+let movieTitle = "Inception";
+const releaseYear = 2010;
+let isWatched = false;
+let rating = 8.8;
 
 // Later in the code:
 isWatched = true;
