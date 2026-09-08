@@ -12,11 +12,38 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 
 // 2. Add try/catch to fetchPosts().
 //    If the fetch fails, log "Failed to load posts".
+const fetchPosts = async () => {
+  try {
+    const res = await fetch(BASE_URL + "/posts");
+    const posts = await res.json();
+    const firstFive = posts.slice(0, 5);
+    firstFive.forEach(post => console.log(post.title));
+    return firstFive;
+  } catch (err) {
+    console.log("Failed to load posts");
+  }
+};
 
 // 3. Write an async function getPostById(id) that:
 //    - fetches BASE_URL + "/posts/" + id
 //    - throws an Error if res.ok is false
 //    - returns the parsed JSON object
+const getPostById = async (id) => {
+  const res = await fetch(BASE_URL + "/posts/" + id);
+  if (!res.ok) {
+    throw new Error("Post " + id + " not found (status " + res.status + ")");
+  }
+  return res.json();
+};
+
+fetchPosts();
 
 // Call getPostById(1) and log the result.
+getPostById(1).then(post => console.log(post));
+
 // Call getPostById(99999) — what happens? Handle it.
+// The response is 404, res.ok is false, so getPostById throws.
+// Without a catch the promise rejection would be unhandled, so handle it here.
+getPostById(99999)
+  .then(post => console.log(post))
+  .catch(err => console.log(err.message));
