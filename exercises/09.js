@@ -19,8 +19,8 @@ const directorName = movie2.director?.name;
 console.log(directorName); // undefined
 
 // 2. Display the tagline of movie2, or "No tagline" if it is empty or missing.
-//    Use ||, not ??. The difference: ?? only falls back on null/undefined,
-//    so movie2.tagline ?? "No tagline" would return "" (empty string) instead of "No tagline".
+//    Use ||, not ??. The difference: nullish coalescing only falls back on
+//    null/undefined, so it would return "" (empty string) instead of "No tagline".
 //    || falls back on any falsy value (null, undefined, "", 0, false), which is what you want here.
 const tagline = movie2.tagline || "No tagline";
 console.log(tagline); // "No tagline"

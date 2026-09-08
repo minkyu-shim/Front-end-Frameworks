@@ -26,7 +26,7 @@ const parasite = movies.find(movie => movie.title === "Parasite");
 const hasOver9_5 = movies.some(movie => movie.rating >= 9.5);
 
 // 6. Get the titles of all Sci-Fi movies rated above 8.0 (chain filter and map).
-const sciFiTitles = movies.filter(movie => movie.genre === "SciFi" && movie.rating >= 9.5).map(movie => movie.title);
+const sciFiTitles = movies.filter(movie => movie.genre === "Sci-Fi" && movie.rating > 8.0).map(movie => movie.title);
 
 // 7. Build a string listing all titles separated by " | "
 //    Expected: "Inception | The Dark Knight | Interstellar | ..."

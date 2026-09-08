@@ -39,7 +39,9 @@ const getPostById = async (id) => {
 fetchPosts();
 
 // Call getPostById(1) and log the result.
-getPostById(1).then(post => console.log(post));
+getPostById(1)
+  .then(post => console.log(post))
+  .catch(err => console.log(err.message));
 
 // Call getPostById(99999) — what happens? Handle it.
 // The response is 404, res.ok is false, so getPostById throws.

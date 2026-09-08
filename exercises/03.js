@@ -7,7 +7,7 @@ const year = 2010;
 const rating = 8.8;
 
 // 1.
-// const label = "Movie: " + title + " (" + year + ")";
+// Original: "Movie: " + title + " (" + year + ")"
 const label = `Movie: ${title} (${year})`;
 
 // 2. Multi-line string (rewrite without \n concatenation):

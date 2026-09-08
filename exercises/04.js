@@ -23,7 +23,7 @@ const { title: movieTitle } = movie;
 
 // 4. Destructure a field that does not exist: tagline.
 //    Give it a default value of "No tagline available".
-const { tagline = `No tagline available` } = movie;
+const { tagline = "No tagline available" } = movie;
 
 // 5. Rewrite this function using destructuring in the parameter list:
 function printMovie({ title, year }) {

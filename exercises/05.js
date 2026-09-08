@@ -10,14 +10,14 @@ const [firstGenre] = genres;
 const [first, , third] = genres;
 
 // 3. Destructure the first genre, and collect the rest into a variable called remainingGenres.
-const [firstGenre, ...rest] = genres;
+const [primaryGenre, ...remainingGenres] = genres;
 
 // 4. Swap these two variables without a temp variable:
 let a = "Action";
-let b = "Comedy"
+let b = "Comedy";
 
 // Swap a and b using array destructuring.
-[a, b] = [a, b];
+[a, b] = [b, a];
 
 console.log(genres);          // ["Action", "Sci-Fi", "Thriller"] — should be unchanged
 console.log(a, b);            // "Comedy" "Action" after the swap
