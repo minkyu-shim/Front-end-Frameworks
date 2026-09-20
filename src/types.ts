@@ -7,7 +7,7 @@ export interface Movie {
   release_date: string
   vote_average: number
   vote_count: number
-  popularity: number
+  popularity?: number
   genre_ids: number[]
   adult: boolean
 }
