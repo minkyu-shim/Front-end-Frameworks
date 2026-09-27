@@ -1,22 +1,22 @@
-import type { Movie } from "../types"
+import type {Movie} from "../types"
 import MovieCard from "./MovieCard"
 
 interface MovieListProps {
-  movies: Movie[]
+    movies: Movie[]
 }
 
-const MovieList = ({ movies }: MovieListProps) => {
-  if (!movies.length) {
-    return <p>No movies found.</p>
-  }
+const MovieList = ({movies}: MovieListProps) => {
+    if (!movies.length) {
+        return <p>No movies found.</p>
+    }
 
-  return (
-    <div className="movies-grid">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
-    </div>
-  )
+    return (
+        <div className="movies-grid">
+            {movies.map((movie) => (
+                <MovieCard key={movie.id} movie={movie}/>
+            ))}
+        </div>
+    )
 }
 
 export default MovieList
