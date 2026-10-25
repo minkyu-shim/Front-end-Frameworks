@@ -2,7 +2,7 @@ import {Star, Heart} from "lucide-react"
 import type {Genre, Movie} from "../types"
 import {TMDB_IMAGE_BASE} from "../data/sampleMovies"
 import {getGenreNames} from "../data/genres"
-import {useAppContext} from "../context/AppContext"
+import {useFavoriteStatus} from "../context/AppContext"
 
 const FALLBACK_POSTER =
     "https://via.placeholder.com/300x450/161b22/8b949e?text=No+Poster"
@@ -14,8 +14,7 @@ interface MovieCardProps {
 }
 
 const MovieCard = ({movie, genres: genreList = [], onMovieClick}: MovieCardProps) => {
-    const {toggleFavorite, isFavorite} = useAppContext()
-    const isFav = isFavorite(movie.id)
+    const {isFav, toggle: toggleFavorite} = useFavoriteStatus(movie)
 
     const posterSrc = movie.poster_path
         ? `${TMDB_IMAGE_BASE}${movie.poster_path}`
@@ -37,7 +36,7 @@ const MovieCard = ({movie, genres: genreList = [], onMovieClick}: MovieCardProps
                         <button
                             type="button"
                             className={`favorite-btn${isFav ? " is-favorite" : ""}`}
-                            onClick={() => toggleFavorite(movie)}
+                            onClick={toggleFavorite}
                             aria-label={
                                 isFav ? "Remove from favourites" : "Add to favourites"
                             }

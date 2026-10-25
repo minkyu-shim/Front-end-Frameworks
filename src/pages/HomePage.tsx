@@ -8,28 +8,41 @@ import type {Movie} from "../types"
 
 interface HomePageProps {
     searchQuery?: string
+    // Shown while the live fetch is loading or after it fails (placeholder data)
+    fallbackMovies?: Movie[]
 }
 
-const HomePage = ({searchQuery = ""}: HomePageProps) => {
+const HomePage = ({searchQuery = "", fallbackMovies}: HomePageProps) => {
     const {movies, isLoading, error} = useMovies()
     const {genres} = useGenres()
     const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null)
 
-    const filteredMovies = movies.filter((movie) =>
+    const hasLiveData = !isLoading && !error
+    const showFallback = !hasLiveData && fallbackMovies !== undefined
+    const visibleMovies = showFallback ? fallbackMovies : movies
+
+    const filteredMovies = visibleMovies.filter((movie) =>
         movie.title.toLowerCase().includes(searchQuery.toLowerCase())
     )
 
     return (
         <main className="main-container">
             <h1>Movie App</h1>
-            {isLoading && (
+            {showFallback && (
+                <p className="empty-text">
+                    {isLoading
+                        ? "Loading live movies…"
+                        : "Live data unavailable, showing sample movies."}
+                </p>
+            )}
+            {!showFallback && isLoading && (
                 <div className="movies-grid">
                     {Array.from({length: 8}).map((_, index) => (
                         <div key={index} className="skeleton-card"/>
                     ))}
                 </div>
             )}
-            {!isLoading && error && (
+            {!showFallback && !isLoading && error && (
                 <div className="empty-state">
                     <div className="empty-icon">
                         <AlertTriangle/>
@@ -38,7 +51,7 @@ const HomePage = ({searchQuery = ""}: HomePageProps) => {
                     <p className="empty-text">{error}</p>
                 </div>
             )}
-            {!isLoading && !error && (
+            {(hasLiveData || showFallback) && (
                 <MovieList
                     movies={filteredMovies}
                     genres={genres}

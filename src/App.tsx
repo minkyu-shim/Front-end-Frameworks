@@ -5,6 +5,7 @@ import HeaderComponent from "./components/HeaderComp"
 import HomePage from "./pages/HomePage"
 import AboutPage from "./pages/AboutPage"
 import NotFoundPage from "./pages/NotFoundPage"
+import {SAMPLE_MOVIES} from "./data/sampleMovies"
 
 function App() {
     const [searchQuery, setSearchQuery] = useState("")
@@ -15,7 +16,10 @@ function App() {
                 <div className="app-layout">
                     <HeaderComponent searchQuery={searchQuery} onChange={setSearchQuery}/>
                     <Routes>
-                        <Route path="/" element={<HomePage searchQuery={searchQuery}/>}/>
+                        <Route
+                            path="/"
+                            element={<HomePage searchQuery={searchQuery} fallbackMovies={SAMPLE_MOVIES}/>}
+                        />
                         <Route path="/about" element={<AboutPage/>}/>
                         <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>

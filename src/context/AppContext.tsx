@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect, useReducer} from "react"
+import {createContext, useContext, useEffect, useReducer, useState} from "react"
 import type {ReactNode} from "react"
 import type {Movie, Theme} from "../types"
 import {getFavorites, getTheme, saveFavorites, setTheme} from "../utils/storage"
@@ -94,4 +94,24 @@ export const useAppContext = () => {
         throw new Error("useAppContext must be used within an AppProvider")
     }
     return context
+}
+
+// 6. Favourite state for a single movie. Inside AppProvider it reads/writes the
+// global watchlist; rendered standalone (no provider) it falls back to local state.
+// eslint-disable-next-line react-refresh/only-export-components
+export const useFavoriteStatus = (movie: Movie) => {
+    const context = useContext(AppContext)
+    const [localFav, setLocalFav] = useState(false)
+
+    if (context) {
+        return {
+            isFav: context.isFavorite(movie.id),
+            toggle: () => context.toggleFavorite(movie),
+        }
+    }
+
+    return {
+        isFav: localFav,
+        toggle: () => setLocalFav((prev) => !prev),
+    }
 }

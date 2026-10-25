@@ -3,7 +3,7 @@ import {Heart, Star} from "lucide-react"
 import type {Genre, Movie} from "../types"
 import {getBackdropUrl, getPosterUrl} from "../data/sampleMovies"
 import {getGenreNames} from "../data/genres"
-import {useAppContext} from "../context/AppContext"
+import {useFavoriteStatus} from "../context/AppContext"
 
 interface MovieModalProps {
     movie: Movie
@@ -12,8 +12,7 @@ interface MovieModalProps {
 }
 
 const MovieModal = ({movie, genres: genreList = [], onClose}: MovieModalProps) => {
-    const {toggleFavorite, isFavorite} = useAppContext()
-    const isFav = isFavorite(movie.id)
+    const {isFav, toggle: toggleFavorite} = useFavoriteStatus(movie)
 
     // Close on Escape; the cleanup removes the listener when the modal unmounts
     useEffect(() => {
@@ -101,7 +100,7 @@ const MovieModal = ({movie, genres: genreList = [], onClose}: MovieModalProps) =
                             <button
                                 type="button"
                                 className="btn-primary"
-                                onClick={() => toggleFavorite(movie)}
+                                onClick={toggleFavorite}
                             >
                                 <Heart fill={isFav ? "currentColor" : "none"}/>
                                 {isFav ? "In Watchlist" : "Add to Watchlist"}
