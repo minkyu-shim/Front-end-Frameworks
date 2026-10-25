@@ -11,3 +11,8 @@ export interface Movie {
   genre_ids: number[]
   adult: boolean
 }
+
+export interface Genre {
+  id: number
+  name: string
+}

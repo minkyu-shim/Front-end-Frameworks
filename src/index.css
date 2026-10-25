@@ -129,6 +129,30 @@ select {
   gap: 20px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-shrink: 0;
+}
+
+.header-nav {
+  display: flex;
+  gap: 16px;
+}
+
+.header-nav a {
+  color: var(--text-muted);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.header-nav a:hover,
+.header-nav a.active {
+  color: var(--text-main);
+}
+
 .brand-logo {
   display: flex;
   align-items: center;

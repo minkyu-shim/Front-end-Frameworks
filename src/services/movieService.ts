@@ -1,5 +1,4 @@
-import { SAMPLE_MOVIES } from "../data/sampleMovies"
-import type { Movie } from "../types"
+import type { Genre, Movie } from "../types"
 
 interface FetchMoviesParams {
     search?: string
@@ -20,40 +19,34 @@ interface FetchMoviesResult {
 const BASE_URL = import.meta.env.VITE_TMDB_BASE_URL || "https://api.themoviedb.org/3"
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY || ""
 
+async function tmdbGet(path: string, signal?: AbortSignal) {
+    const response = await fetch(`${BASE_URL}${path}`, {
+        headers: {
+            accept: "application/json",
+            Authorization: `Bearer ${API_KEY}`,
+        },
+        signal,
+    })
+
+    if (!response.ok) {
+        throw new Error(
+            `TMDB request failed (${response.status}). Check VITE_TMDB_API_KEY in your .env file.`
+        )
+    }
+
+    return response.json()
+}
+
 async function fetchMovies({
     search,
     page = 1,
     signal,
 }: FetchMoviesParams = {}): Promise<FetchMoviesResult> {
-    if (!API_KEY || API_KEY === "your_api_key_here") {
-        const results = search
-            ? SAMPLE_MOVIES.filter((movie) =>
-                  movie.title.toLowerCase().includes(search.toLowerCase())
-              )
-            : SAMPLE_MOVIES
+    const path = search
+        ? `/search/movie?query=${encodeURIComponent(search)}&page=${page}`
+        : `/movie/popular?language=en-US&page=${page}`
 
-        return {
-            results,
-            total_pages: 1,
-            total_results: results.length,
-            isLiveApi: false,
-        }
-    }
-
-    const endpoint = search
-        ? `${BASE_URL}/search/movie?query=${encodeURIComponent(search)}&page=${page}`
-        : `${BASE_URL}/movie/popular?page=${page}`
-
-    const response = await fetch(endpoint, {
-        headers: { Authorization: `Bearer ${API_KEY}` },
-        signal,
-    })
-
-    if (!response.ok) {
-        throw new Error(`Failed to fetch movies (${response.status})`)
-    }
-
-    const data = await response.json()
+    const data = await tmdbGet(path, signal)
 
     return {
         results: data.results ?? [],
@@ -63,4 +56,9 @@ async function fetchMovies({
     }
 }
 
-export const movieService = { fetchMovies }
+async function fetchGenres(signal?: AbortSignal): Promise<Genre[]> {
+    const data = await tmdbGet("/genre/movie/list?language=en", signal)
+    return data.genres ?? []
+}
+
+export const movieService = { fetchMovies, fetchGenres }

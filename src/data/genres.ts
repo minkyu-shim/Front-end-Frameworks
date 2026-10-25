@@ -1,3 +1,5 @@
+import type { Genre } from "../types";
+
 export const GENRES: Record<number, string> = {
   28: "Action",
   12: "Adventure",
@@ -20,7 +22,10 @@ export const GENRES: Record<number, string> = {
   37: "Western"
 };
 
-export function getGenreNames(genreIds: number[] = []) {
+// Uses the genres fetched from TMDB when available, else the static map above.
+export function getGenreNames(genreIds: number[] = [], genres: Genre[] = []) {
   if (!genreIds || !genreIds.length) return ["General"];
-  return genreIds.map(id => GENRES[id] || "Other");
+  return genreIds.map(
+    id => genres.find(genre => genre.id === id)?.name || GENRES[id] || "Other"
+  );
 }

@@ -1,6 +1,6 @@
 import {useState} from "react"
 import {Star, Heart} from "lucide-react"
-import type {Movie} from "../types"
+import type {Genre, Movie} from "../types"
 import {TMDB_IMAGE_BASE} from "../data/sampleMovies"
 import {getGenreNames} from "../data/genres"
 
@@ -9,16 +9,18 @@ const FALLBACK_POSTER =
 
 interface MovieCardProps {
     movie: Movie
+    genres?: Genre[]
+    onMovieClick?: (movie: Movie) => void
 }
 
-const MovieCard = ({movie}: MovieCardProps) => {
+const MovieCard = ({movie, genres: genreList = [], onMovieClick}: MovieCardProps) => {
     const [isFavorite, setIsFavorite] = useState(false)
 
     const posterSrc = movie.poster_path
         ? `${TMDB_IMAGE_BASE}${movie.poster_path}`
         : FALLBACK_POSTER
 
-    const genres = getGenreNames(movie.genre_ids)
+    const genres = getGenreNames(movie.genre_ids, genreList)
     const year = movie.release_date ? movie.release_date.slice(0, 4) : "—"
 
     return (
@@ -42,6 +44,20 @@ const MovieCard = ({movie}: MovieCardProps) => {
                             <Heart/>
                         </button>
                     </div>
+                    <span
+                        className="quick-view-hint"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => onMovieClick?.(movie)}
+                        onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                                event.preventDefault()
+                                onMovieClick?.(movie)
+                            }
+                        }}
+                    >
+                        View Details
+                    </span>
                 </div>
             </div>
             <div className="movie-card-info">
