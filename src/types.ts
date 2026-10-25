@@ -16,3 +16,5 @@ export interface Genre {
   id: number
   name: string
 }
+
+export type Theme = "light" | "dark"

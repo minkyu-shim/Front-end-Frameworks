@@ -1,8 +1,9 @@
 import {useEffect} from "react"
-import {Star} from "lucide-react"
+import {Heart, Star} from "lucide-react"
 import type {Genre, Movie} from "../types"
 import {getBackdropUrl, getPosterUrl} from "../data/sampleMovies"
 import {getGenreNames} from "../data/genres"
+import {useAppContext} from "../context/AppContext"
 
 interface MovieModalProps {
     movie: Movie
@@ -11,6 +12,9 @@ interface MovieModalProps {
 }
 
 const MovieModal = ({movie, genres: genreList = [], onClose}: MovieModalProps) => {
+    const {toggleFavorite, isFavorite} = useAppContext()
+    const isFav = isFavorite(movie.id)
+
     // Close on Escape; the cleanup removes the listener when the modal unmounts
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -94,6 +98,14 @@ const MovieModal = ({movie, genres: genreList = [], onClose}: MovieModalProps) =
                         </div>
 
                         <div className="modal-footer-actions">
+                            <button
+                                type="button"
+                                className="btn-primary"
+                                onClick={() => toggleFavorite(movie)}
+                            >
+                                <Heart fill={isFav ? "currentColor" : "none"}/>
+                                {isFav ? "In Watchlist" : "Add to Watchlist"}
+                            </button>
                             <a
                                 className="btn-secondary"
                                 href={`https://www.youtube.com/results?search_query=${encodeURIComponent(trailerQuery)}`}

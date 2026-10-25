@@ -1,4 +1,4 @@
-import type { Movie } from "../types"
+import type { Movie, Theme } from "../types"
 
 const FAVORITES_KEY = "cinegrid_favorites"
 const THEME_KEY = "cinegrid_theme"
@@ -13,22 +13,15 @@ export function getFavorites(): Movie[] {
     }
 }
 
-export function toggleFavorite(movie: Movie): Movie[] {
-    const favorites = getFavorites()
-    const isFavorite = favorites.some((favorite) => favorite.id === movie.id)
-    const updated = isFavorite
-        ? favorites.filter((favorite) => favorite.id !== movie.id)
-        : [...favorites, movie]
-
-    localStorage.setItem(FAVORITES_KEY, JSON.stringify(updated))
-    return updated
+export function saveFavorites(favorites: Movie[]): void {
+    localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites))
 }
 
-export function getTheme(): "dark" | "light" {
+export function getTheme(): Theme {
     return localStorage.getItem(THEME_KEY) === "light" ? "light" : "dark"
 }
 
-export function setTheme(theme: "dark" | "light"): void {
+export function setTheme(theme: Theme): void {
     localStorage.setItem(THEME_KEY, theme)
     document.documentElement.setAttribute("data-theme", theme)
 }
